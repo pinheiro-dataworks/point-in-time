@@ -1,0 +1,90 @@
+# ---------------------------------------------------------------------------
+# Point-in-Time Analytics Lab — ignore rules
+# ---------------------------------------------------------------------------
+
+# --- Raw data -------------------------------------------------------------
+# The raw OHLCV corpus is ~106 MB across 501 per-ticker CSVs and is fully
+# reproducible via `make ingest` (see src/pit_lab/ingest.py). Keeping it out of
+# version control keeps the clone small; the curated Gold-layer artefacts in
+# data/processed/ are committed instead, because the dashboard needs them at
+# runtime and they are only a few MB.
+data/raw/
+data/interim/
+
+# Committed on purpose — the dashboard's serving layer.
+!data/processed/
+!data/processed/**
+
+# --- Local warehouse ------------------------------------------------------
+*.duckdb
+*.duckdb.wal
+!data/processed/*.duckdb
+
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib60/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Virtual environments -------------------------------------------------
+.venv/
+venv/
+ENV/
+env/
+
+# --- Testing / linting ----------------------------------------------------
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- dbt ------------------------------------------------------------------
+dbt_pit/target/
+dbt_pit/dbt_packages/
+dbt_pit/logs/
+logs/
+.user.yml
+
+# --- Secrets --------------------------------------------------------------
+.env
+.env.*
+!.env.example
+profiles.yml
+!config/profiles.example.yml
+
+# --- Jupyter --------------------------------------------------------------
+.ipynb_checkpoints/
+
+# --- Streamlit ------------------------------------------------------------
+.streamlit/secrets.toml
+
+# --- OS / editor ----------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# --- Local tooling ----------------------------------------------------------
+# Claude Code's local session settings — machine-specific, not project content.
+.claude/settings.local.json

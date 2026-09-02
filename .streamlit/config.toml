@@ -1,0 +1,17 @@
+[theme]
+# secondaryBackgroundColor styles widget chrome (selectbox, expander, code
+# blocks) EVERYWHERE, not just the sidebar - so it must stay a light tone.
+# The sidebar's black background is applied purely via CSS in
+# dashboard/theme/style.css, independent of this token.
+base = "light"
+backgroundColor = "#F7F6EF"
+secondaryBackgroundColor = "#EFEEE4"
+primaryColor = "#D4A657"
+textColor = "#0B0B0B"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

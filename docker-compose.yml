@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# Reproducible warehouse for reviewers who do not want a native install.
+# ---------------------------------------------------------------------------
+# The project was built against a native PostgreSQL 16 install, but every
+# credential defaults to the same values here, so the pipeline runs unchanged:
+#
+#   docker compose up -d
+#   make ingest && make build
+#
+# Cost: $0 — Postgres is open source and this runs entirely on your machine.
+# ---------------------------------------------------------------------------
+
+services:
+  warehouse:
+    image: postgres:16-alpine
+    container_name: pit_lab_warehouse
+    environment:
+      POSTGRES_DB: pit_lab
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pitlab_dev_2026
+      # Deterministic collation keeps ORDER BY results identical across hosts,
+      # which matters because the dbt tests assert on ordered output.
+      POSTGRES_INITDB_ARGS: "--locale=C --encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - warehouse_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pit_lab"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # The Gold layer range-joins ~1.26M fact rows against the SCD2 dimension.
+    # The default 128 MB shared_buffers makes the EXPLAIN ANALYZE benchmarks
+    # noisy; these settings match the native install the benchmarks were run on.
+    command: >
+      postgres
+      -c shared_buffers=256MB
+      -c work_mem=32MB
+      -c max_parallel_workers_per_gather=2
+      -c track_io_timing=on
+
+volumes:
+  warehouse_data:
+    name: pit_lab_warehouse_data

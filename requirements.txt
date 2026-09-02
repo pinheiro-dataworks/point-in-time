@@ -1,0 +1,21 @@
+# ---------------------------------------------------------------------------
+# Runtime dependencies — Streamlit Community Cloud deployment surface ONLY.
+# ---------------------------------------------------------------------------
+# Deliberately minimal. The dashboard reads pre-materialised Gold-layer
+# artefacts from data/processed/, so neither dbt nor a Postgres driver is
+# needed at serving time. Keeping this file to five direct dependencies
+# minimises cold-build time and the chance of a resolver failure on deploy.
+#
+# Transformation-time dependencies live in requirements-dev.txt.
+#
+# Upper bounds are intentional, not incidental:
+#   pandas <3.0  — pandas 3.0 changes copy-on-write and string-dtype defaults.
+#   plotly <7    — plotly 7 is a major release with API churn.
+# Both resolve to the majors this project was built and tested against.
+# ---------------------------------------------------------------------------
+
+streamlit==1.62.0
+pandas>=2.3,<3.0
+duckdb==1.5.5
+plotly>=6,<7
+pyarrow>=17,<26

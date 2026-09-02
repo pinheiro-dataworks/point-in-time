@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# dbt connection profile - EXAMPLE
+# ---------------------------------------------------------------------------
+# dbt looks for profiles.yml in ~/.dbt/ by default, or in the directory given
+# by --profiles-dir. This repository points it locally instead, so the
+# profile travels with the project:
+#
+#   Windows PowerShell:
+#     Copy-Item config\profiles.example.yml profiles.yml
+#     dbt run --project-dir dbt_pit --profiles-dir .
+#
+# `make dbt-run` does this automatically. profiles.yml is git-ignored because
+# it is the one file allowed to carry a real credential; committing this
+# example instead documents the shape without the secret.
+#
+# Values below match .env.example and docker-compose.yml, so the project
+# builds unchanged whether Postgres is the native install or the Docker
+# container.
+# ---------------------------------------------------------------------------
+
+pit_lab:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('PIT_DB_HOST', 'localhost') }}"
+      port: "{{ env_var('PIT_DB_PORT', '5432') | as_number }}"
+      user: "{{ env_var('PIT_DB_USER', 'postgres') }}"
+      password: "{{ env_var('PIT_DB_PASSWORD', 'pitlab_dev_2026') }}"
+      dbname: "{{ env_var('PIT_DB_NAME', 'pit_lab') }}"
+      schema: "{{ env_var('PIT_DB_SCHEMA', 'public') }}"
+      threads: 4
+      keepalives_idle: 0
+
+    ci:
+      # Used by .github/workflows/dbt_ci.yml, where Postgres runs as a GitHub
+      # Actions service container reachable on its default port.
+      type: postgres
+      host: localhost
+      port: 5432
+      user: postgres
+      password: "{{ env_var('PIT_DB_PASSWORD') }}"
+      dbname: pit_lab
+      schema: public
+      threads: 4

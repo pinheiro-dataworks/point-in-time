@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pit-lab"
+version = "1.0.0"
+description = "Point-in-Time Analytics Lab — SCD Type 2 sector modelling on S&P 500 / GICS data"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Renan Pinheiro" }]
+keywords = [
+    "analytics-engineering",
+    "slowly-changing-dimension",
+    "point-in-time",
+    "look-ahead-bias",
+    "dbt",
+    "gics",
+]
+
+[project.urls]
+Homepage = "https://github.com/pinheiro-dataworks"
+Repository = "https://github.com/pinheiro-dataworks"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# ---------------------------------------------------------------------------
+# Ruff — linting and formatting
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "dashboard", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+    "PTH", # flake8-use-pathlib
+    "RUF", # ruff-specific
+]
+ignore = [
+    "E501",  # line length is enforced by the formatter, not the linter
+]
+
+[tool.ruff.lint.per-file-ignores]
+# UI copy strings legitimately use en/em dashes and emoji - ambiguous-unicode
+# checks exist to catch confusable identifiers, not to flag prose typography.
+"dashboard/**/*.py" = ["RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["pit_lab"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --strict-markers"
+markers = [
+    "warehouse: tests that require a live PostgreSQL connection",
+    "slow: tests that take more than a few seconds",
+]
