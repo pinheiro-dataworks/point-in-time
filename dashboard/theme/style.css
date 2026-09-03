@@ -1,0 +1,231 @@
+/* ===========================================================================
+   Point-in-Time Analytics Lab - dashboard chrome
+   ===========================================================================
+   Reproduces the standard layout: a black sidebar carrying the brand mark,
+   project title, navigation and a footer credit, against a warm off-white
+   content area. Streamlit's theme config (.streamlit/config.toml) sets the
+   base colors; this stylesheet handles what config.toml cannot reach -
+   sidebar-only text color, card treatment, and the nav's pill styling.
+   =========================================================================== */
+
+:root {
+    --pit-black: #0B0B0B;
+    --pit-cream: #F5F4EC;
+    --pit-cream-dim: #C7C6BC;
+    --pit-accent: #D4A657;
+    --pit-border: rgba(255, 255, 255, 0.10);
+}
+
+/* Base font: system sans throughout, per the project's typography standard -
+   no display or serif face anywhere, including headings. */
+html, body, [class*="css"] {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+/* --------------------------------------------------------------------- */
+/* Sidebar: forced black, cream text, regardless of the light theme      */
+/* --------------------------------------------------------------------- */
+section[data-testid="stSidebar"] {
+    background-color: var(--pit-black) !important;
+    border-right: 1px solid var(--pit-border);
+}
+section[data-testid="stSidebar"] > div {
+    background-color: var(--pit-black) !important;
+}
+
+section[data-testid="stSidebar"] * {
+    color: var(--pit-cream) !important;
+}
+
+section[data-testid="stSidebar"] hr {
+    border-color: var(--pit-border);
+}
+
+/* Brand block */
+.pit-brand {
+    padding: 4px 0 18px;
+}
+.pit-brand .mark {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pit-accent) !important;
+    font-weight: 600;
+}
+.pit-brand .name {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-top: 6px;
+}
+.pit-brand .edition {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 5px 9px;
+    border: 1px solid var(--pit-border);
+    border-radius: 5px;
+    font-size: 11.5px;
+    color: var(--pit-cream-dim) !important;
+}
+.pit-brand .edition .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pit-accent);
+    display: inline-block;
+}
+
+/* Manually-rendered nav via st.page_link, restyled into the bordered-pill
+   look from the standard layout. Targets stPageLink's own container so it
+   works regardless of whether Streamlit's automatic nav widget is hidden. */
+section[data-testid="stSidebar"] [data-testid="stPageLink"] {
+    border: 1px solid var(--pit-border);
+    border-radius: 7px;
+    margin-bottom: 6px;
+    transition: background-color 0.15s ease;
+}
+section[data-testid="stSidebar"] [data-testid="stPageLink"]:hover {
+    background-color: rgba(212, 166, 87, 0.12);
+}
+section[data-testid="stSidebar"] [data-testid="stPageLink"] p {
+    font-weight: 600;
+}
+section[data-testid="stSidebar"] [data-testid="stPageLink"][aria-current="page"],
+section[data-testid="stSidebar"] [data-testid="stPageLink"]:has(a[aria-current="page"]) {
+    background-color: rgba(212, 166, 87, 0.16);
+    border-color: var(--pit-accent);
+}
+section[data-testid="stSidebar"] [data-testid="stPageLink"][aria-current="page"] p,
+section[data-testid="stSidebar"] [data-testid="stPageLink"]:has(a[aria-current="page"]) p {
+    color: var(--pit-accent) !important;
+}
+
+/* Footer credit block, pinned via Streamlit's own bottom-of-sidebar flow */
+.pit-sidebar-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--pit-border);
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--pit-cream-dim) !important;
+}
+.pit-sidebar-footer a {
+    color: var(--pit-cream) !important;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--pit-cream-dim);
+}
+.pit-sidebar-footer a:hover {
+    border-bottom-style: solid;
+}
+
+/* --------------------------------------------------------------------- */
+/* Main content area                                                     */
+/* --------------------------------------------------------------------- */
+.block-container {
+    padding-top: 2.2rem;
+    padding-bottom: 3rem;
+    max-width: 1180px;
+}
+
+h1, h2, h3 {
+    font-weight: 800 !important;
+    letter-spacing: -0.01em;
+}
+
+.pit-eyebrow {
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--pit-accent);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.pit-eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 2px;
+    background: var(--pit-accent);
+    display: inline-block;
+}
+
+.pit-lede {
+    font-size: 16.5px;
+    color: #52514E;
+    max-width: 760px;
+    line-height: 1.6;
+}
+
+/* KPI / stat tiles */
+.pit-stat {
+    border: 1px solid rgba(11,11,11,0.10);
+    background: #FCFCFB;
+    border-radius: 10px;
+    padding: 16px 18px;
+    height: 100%;
+}
+.pit-stat .v {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--pit-black);
+    line-height: 1.15;
+}
+.pit-stat .l {
+    font-size: 12px;
+    color: #898781;
+    margin-top: 5px;
+    line-height: 1.4;
+}
+.pit-stat .v.critical { color: #D03B3B; }
+.pit-stat .v.good { color: #0CA30C; }
+.pit-stat .v.accent { color: var(--pit-accent); }
+
+/* Generic content card */
+.pit-card {
+    border: 1px solid rgba(11,11,11,0.10);
+    background: #FCFCFB;
+    border-radius: 10px;
+    padding: 20px 22px;
+}
+
+.pit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 5px;
+    border: 1px dashed rgba(11,11,11,0.18);
+    color: #898781;
+}
+
+.pit-source-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: rgba(212, 166, 87, 0.15);
+    color: #8A6F3D;
+    margin-right: 6px;
+}
+
+/* Footer credit shown at the bottom of every page's main content */
+.pit-footer-note {
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(11,11,11,0.10);
+    font-size: 12px;
+    color: #898781;
+}
+.pit-footer-note a {
+    color: #52514E;
+    font-weight: 600;
+}
