@@ -1,0 +1,7 @@
+ticker,company_name,exclusion_class,exclusion_reason
+WBD,Warner Bros. Discovery,entity_discontinuity,"Formed April 2022 from the merger of Discovery Inc. and WarnerMedia. The price series is backfilled from Discovery (DISCA), whose 2018 sector history differs from the merged entity's. Pre-2022 observations belong to a different company."
+PSKY,Paramount Skydance Corporation,entity_discontinuity,"Successor to Paramount Global, itself the 2019 ViacomCBS re-merger of Viacom and CBS, recapitalised again by Skydance in 2025. The backfilled series spans at least two corporate identities."
+TKO,TKO Group Holdings,entity_discontinuity,"Formed September 2023 from the combination of WWE and UFC/Endeavor. The price series is backfilled from WWE, a different entity with a different classification history."
+FOXA,Fox Corporation (Class A),entity_discontinuity,"Fox Corporation began trading 2019-03-12 after Disney acquired 21st Century Fox's entertainment assets. The FOXA of today is not the FOXA reclassified in September 2018."
+FOX,Fox Corporation (Class B),entity_discontinuity,"Same restructuring as FOXA; began trading 2019-03-13."
+TTD,Trade Desk (The),unverified_sector_history,"Current sector is Communication Services, which did not exist before 2018-09-24, so the ''sector never changed'' assumption is provably false. No consulted source names TTD individually in the 2018 change tables, so its pre-2018 sector cannot be transcribed rather than guessed."

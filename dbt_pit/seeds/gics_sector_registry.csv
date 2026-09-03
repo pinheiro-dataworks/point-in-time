@@ -1,0 +1,13 @@
+gics_sector,existed_from,existed_to,source_id,notes
+Energy,1900-01-01,,S9,Present since GICS inception in 1999; sentinel start means "before the analysis window"
+Materials,1900-01-01,,S9,Present since GICS inception in 1999
+Industrials,1900-01-01,,S9,Present since GICS inception in 1999
+Consumer Discretionary,1900-01-01,,S9,Present since GICS inception in 1999
+Consumer Staples,1900-01-01,,S9,Present since GICS inception in 1999
+Health Care,1900-01-01,,S9,Present since GICS inception in 1999
+Financials,1900-01-01,,S9,Present since GICS inception in 1999; equity REITs removed to Real Estate in 2016
+Information Technology,1900-01-01,,S9,Present since GICS inception in 1999
+Utilities,1900-01-01,,S9,Present since GICS inception in 1999
+Telecommunication Services,1900-01-01,2018-09-21,S3,Renamed to Communication Services after close 2018-09-21; ceases to exist as a label from 2018-09-24
+Communication Services,2018-09-24,,S3,Created after close 2018-09-21; first trading day under the new label is 2018-09-24
+Real Estate,2016-09-19,,S8,"11th GICS sector, separated from Financials after close 2016-08-31; S&P 500 index implementation after close 2016-09-16, so first trading day is 2016-09-19"

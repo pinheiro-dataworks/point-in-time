@@ -1,0 +1,36 @@
+ticker,company_name,change_type,old_gics_sector,new_gics_sector,old_gics_sub_industry,new_gics_sub_industry,effective_after_close,first_trading_day,source_id
+GOOGL,Alphabet Inc. Class A,reclassification,Information Technology,Communication Services,Internet Software and Services,Interactive Media and Services,2018-09-21,2018-09-24,S1
+GOOG,Alphabet Inc. Class C,reclassification,Information Technology,Communication Services,Internet Software and Services,Interactive Media and Services,2018-09-21,2018-09-24,S1
+META,Meta Platforms Inc. (then Facebook Inc.),reclassification,Information Technology,Communication Services,Internet Software and Services,Interactive Media and Services,2018-09-21,2018-09-24,S1
+EA,Electronic Arts Inc.,reclassification,Information Technology,Communication Services,Home Entertainment Software,Interactive Home Entertainment,2018-09-21,2018-09-24,S1
+ATVI,Activision Blizzard Inc.,reclassification,Information Technology,Communication Services,Home Entertainment Software,Interactive Home Entertainment,2018-09-21,2018-09-24,S1
+TTWO,Take-Two Interactive Software Inc.,reclassification,Information Technology,Communication Services,Home Entertainment Software,Interactive Home Entertainment,2018-09-21,2018-09-24,S4
+TWTR,Twitter Inc.,reclassification,Information Technology,Communication Services,Internet Software and Services,Interactive Media and Services,2018-09-21,2018-09-24,S4
+NFLX,Netflix Inc.,reclassification,Consumer Discretionary,Communication Services,Internet and Direct Marketing Retail,Movies and Entertainment,2018-09-21,2018-09-24,S1
+TRIP,TripAdvisor Inc.,reclassification,Consumer Discretionary,Communication Services,Internet and Direct Marketing Retail,Interactive Media and Services,2018-09-21,2018-09-24,S1
+EBAY,eBay Inc.,reclassification,Information Technology,Consumer Discretionary,Internet Software and Services,Internet and Direct Marketing Retail,2018-09-21,2018-09-24,S1
+ETSY,Etsy Inc.,reclassification,Information Technology,Consumer Discretionary,Internet Software and Services,Internet and Direct Marketing Retail,2018-09-21,2018-09-24,S1
+DIS,The Walt Disney Company,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S2
+CMCSA,Comcast Corporation,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S2
+CHTR,Charter Communications Inc.,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S3
+OMC,Omnicom Group Inc.,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S3
+NWSA,News Corporation Class A,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S3
+NWS,News Corporation Class B,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S3
+LYV,Live Nation Entertainment Inc.,reclassification,Consumer Discretionary,Communication Services,,,2018-09-21,2018-09-24,S3
+T,AT&T Inc.,sector_rename,Telecommunication Services,Communication Services,,,2018-09-21,2018-09-24,S2
+VZ,Verizon Communications Inc.,sector_rename,Telecommunication Services,Communication Services,,,2018-09-21,2018-09-24,S2
+TMUS,T-Mobile US Inc.,sector_rename,Telecommunication Services,Communication Services,,,2018-09-21,2018-09-24,S3
+V,Visa Inc.,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+MA,Mastercard Incorporated,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+PYPL,PayPal Holdings Inc.,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+FIS,Fidelity National Information Services Inc.,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+FISV,Fiserv Inc.,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+GPN,Global Payments Inc.,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+JKHY,Jack Henry & Associates Inc.,reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+CPAY,Corpay Inc. (then FleetCor Technologies Inc.),reclassification,Information Technology,Financials,Data Processing and Outsourced Services,Transaction and Payment Processing Services,2023-03-17,2023-03-20,S5
+ADP,Automatic Data Processing Inc.,reclassification,Information Technology,Industrials,Data Processing and Outsourced Services,Human Resource and Employment Services,2023-03-17,2023-03-20,S5
+PAYX,Paychex Inc.,reclassification,Information Technology,Industrials,Data Processing and Outsourced Services,Human Resource and Employment Services,2023-03-17,2023-03-20,S5
+BR,Broadridge Financial Solutions Inc.,reclassification,Information Technology,Industrials,Data Processing and Outsourced Services,Human Resource and Employment Services,2023-03-17,2023-03-20,S5
+TGT,Target Corporation,reclassification,Consumer Discretionary,Consumer Staples,General Merchandise Stores,Consumer Staples Merchandise Retail,2023-03-17,2023-03-20,S5
+DG,Dollar General Corporation,reclassification,Consumer Discretionary,Consumer Staples,General Merchandise Stores,Consumer Staples Merchandise Retail,2023-03-17,2023-03-20,S5
+DLTR,Dollar Tree Inc.,reclassification,Consumer Discretionary,Consumer Staples,General Merchandise Stores,Consumer Staples Merchandise Retail,2023-03-17,2023-03-20,S5
