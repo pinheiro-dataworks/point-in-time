@@ -1,0 +1,65 @@
+name: 'pit_lab'
+version: '1.0.0'
+config-version: 2
+
+profile: 'pit_lab'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ---------------------------------------------------------------------------
+# Why a dbt project exists alongside sql/silver and sql/gold
+# ---------------------------------------------------------------------------
+# sql/ holds the hand-rolled implementation - the mechanism, written out, with
+# no framework between the SQL and the reader. This dbt project reproduces the
+# same warehouse using production tooling: ref()-based dependency resolution,
+# `dbt snapshot` for SCD Type 2 instead of the hand-written UPDATE/INSERT
+# cycle, generic + singular tests instead of ad hoc integrity queries, and
+# auto-generated documentation.
+#
+# Both are real, both build a working warehouse, and they are meant to be
+# compared. The dbt models below `models/silver/dim_sector_scd*` and
+# `models/gold/` are deliberately thin - they select from the SAME Bronze
+# tables and the SAME seed file as sql/, so a reviewer can diff the two
+# dimension tables and confirm they agree, not just accept dbt's claim that
+# `snapshot` does what an SCD2 process should.
+# ---------------------------------------------------------------------------
+
+seeds:
+  pit_lab:
+    +schema: bronze
+    sector_history:
+      +column_types:
+        effective_after_close: date
+        first_trading_day: date
+    gics_sector_registry:
+      +column_types:
+        existed_from: date
+        existed_to: date
+    excluded_entities: {}
+
+snapshots:
+  pit_lab:
+    +target_schema: silver
+
+models:
+  pit_lab:
+    +materialized: table
+    silver:
+      +schema: silver
+
+vars:
+  # Mirrors PIT_ANALYSIS_START / PIT_ANALYSIS_END from .env. dbt has no native
+  # way to read a .env file at parse time, so the window is passed explicitly
+  # via --vars in the Makefile / CI workflow, with these as the fallback
+  # default so `dbt run` alone still produces a sensible result.
+  analysis_start: '2016-10-03'
+  analysis_end: '2025-12-19'

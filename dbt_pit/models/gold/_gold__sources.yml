@@ -1,0 +1,44 @@
+version: 2
+
+# Gold, like Silver, is built by the hand-rolled pipeline (sql/gold/*.sql via
+# pit_lab.build) and exposed here purely so dbt's test suite can gate it.
+
+sources:
+  - name: gold_pipeline
+    description: Gold-layer business tables produced by sql/gold/*.sql.
+    schema: gold
+    tables:
+      - name: fact_returns_pit
+        description: >
+          Every return observation carrying both sector labels - the one
+          valid on the trade date and the one the ticker carries today.
+        columns:
+          - name: ticker
+            tests: [not_null]
+          - name: trade_date
+            tests: [not_null]
+          - name: sector_at_trade_date
+            tests: [not_null]
+          - name: sector_today
+            tests: [not_null]
+          - name: is_misattributed
+            tests: [not_null]
+
+      - name: sector_daily_returns
+        description: Equal-weighted daily sector return, both join bases.
+        columns:
+          - name: join_basis
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['point_in_time', 'naive']
+
+      - name: sector_cumulative_returns
+        description: Compounded sector return series, both join bases.
+
+      - name: anchor_metric
+        description: One row per sector quantifying the cost of the naive join.
+        columns:
+          - name: gics_sector
+            tests: [not_null, unique]

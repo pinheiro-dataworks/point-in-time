@@ -1,0 +1,65 @@
+version: 2
+
+# These tables are NOT built by dbt - they are built by
+# `python -m pit_lab.build` running sql/silver/*.sql. Declaring them as a
+# source rather than a model lets dbt's test runner validate them anyway,
+# which is what makes `dbt build && dbt test` in CI a meaningful gate over
+# the ENTIRE warehouse, not just the slice dbt happens to materialise itself.
+
+sources:
+  - name: silver_pipeline
+    description: >
+      Silver-layer tables produced by the hand-rolled SQL pipeline
+      (sql/silver/*.sql via pit_lab.build). Tested here, not built here.
+    schema: silver
+    tables:
+      - name: ticker_universe
+        description: The analysable ticker set - has both price history and a current GICS sector.
+        columns:
+          - name: ticker
+            tests: [not_null, unique]
+          - name: current_gics_sector
+            tests: [not_null]
+
+      - name: dim_sector_scd
+        description: >
+          The historically correct SCD Type 2 sector dimension, hand-rolled
+          from bronze.sector_history. See dim_sector_scd_dbt for the
+          production-automation counterpart and how the two differ.
+        columns:
+          - name: sector_key
+            tests: [not_null, unique]
+          - name: ticker
+            tests: [not_null]
+          - name: gics_sector
+            tests: [not_null]
+          - name: valid_from
+            tests: [not_null]
+          - name: is_current
+            tests: [not_null]
+
+      - name: fact_returns
+        description: Daily returns per ticker, computed via LAG over close price.
+        columns:
+          - name: ticker
+            tests: [not_null]
+          - name: trade_date
+            tests: [not_null]
+
+      - name: dim_reconciliation
+        description: >
+          Rows here mean the replayed SCD2 end-state disagrees with the
+          current constituent snapshot. Asserted empty by
+          tests/assert_dim_reconciliation_is_empty.sql.
+
+      - name: sector_existence_violations
+        description: >
+          Rows here mean a dimension row claims a sector before it existed
+          (or after it was retired) under GICS. Asserted empty by
+          tests/assert_no_sector_existence_violations.sql.
+
+      - name: excluded_tickers
+        description: Every ticker held out of the universe, with a reason.
+
+      - name: analysis_window
+        description: The single-row reporting period used by every Gold model.

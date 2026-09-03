@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: >
+      Raw tables loaded by pit_lab.ingest (python -m pit_lab.ingest). dbt does
+      not load these itself - they are the shared landing zone that both the
+      hand-rolled SQL pipeline in sql/ and this dbt project read from, so the
+      two implementations are provably working from identical inputs.
+    schema: bronze
+    tables:
+      - name: daily_prices
+        description: Daily OHLCV per ticker, 2015-12-21 to 2025-12-19.
+        columns:
+          - name: ticker
+            tests: [not_null]
+          - name: trade_date
+            tests: [not_null]
+        loaded_at_field: trade_date
+
+      - name: sp500_current_snapshot
+        description: Current S&P 500 constituents with their CURRENT GICS sector.
+        columns:
+          - name: ticker
+            tests: [not_null, unique]
+
+      - name: sp500_membership
+        description: Index membership intervals since 1996.
+
+      - name: sector_history
+        description: >
+          The curated sector-reclassification seed. See
+          docs/sector_sources.md for the source backing every row.
+        columns:
+          - name: ticker
+            tests: [not_null]
+          - name: first_trading_day
+            tests: [not_null]
+
+      - name: gics_sector_registry
+        description: When each GICS sector label was in force.
+        columns:
+          - name: gics_sector
+            tests: [not_null, unique]
+
+      - name: excluded_entities
+        description: Tickers deliberately held out of the analysis universe.

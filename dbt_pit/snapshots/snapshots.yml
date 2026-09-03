@@ -1,0 +1,61 @@
+version: 2
+
+# ===========================================================================
+# dim_sector_scd_dbt - production-automation SCD Type 2
+# ===========================================================================
+# WHAT THIS DOES AND DOES NOT DO - read before assuming it duplicates
+# sql/silver/03_build_dim_sector_scd.sql
+#
+# dbt snapshot has one job: compare a source query's CURRENT rows against the
+# snapshot table's last-known state, and version any row that changed. Every
+# dbt_valid_from date it produces is the timestamp of the `dbt snapshot`
+# invocation that detected the change - not a date encoded in the data. That
+# makes it a FORWARD-TRACKING mechanism: point it at a schedule (see
+# .github/workflows/dbt_ci.yml) and it will correctly open a new version the
+# next time a ticker's sector changes, whenever that happens.
+#
+# It cannot backfill the September 2018 and March 2023 events with their real
+# historical dates. Doing that would require faking the invocation clock
+# across multiple runs, which is not how any production deployment of
+# `dbt snapshot` actually operates - so this project does not pretend
+# otherwise. The historically correct dimension, with 2018-09-24 and
+# 2023-03-20 as real valid_from dates reconstructed from source documents, is
+# silver.dim_sector_scd, built by sql/silver/03_build_dim_sector_scd.sql and
+# exposed to this project as source('silver_pipeline', 'dim_sector_scd').
+#
+# So the honest way to read the two implementations:
+#
+#   silver.dim_sector_scd      the historically correct dimension. Built
+#                               once, backward-reconstructed from documented
+#                               events. This is what Gold and the dashboard
+#                               read.
+#
+#   silver.dim_sector_scd_dbt  the automation layer, defined below.
+#                               Bootstraps to one row per ticker (current
+#                               state, dbt_valid_from = first `dbt snapshot`
+#                               run), then correctly grows a second version
+#                               the next time GICS reclassifies a constituent
+#                               and the scheduled job runs.
+#
+# Both are real SCD Type 2. They answer different questions: "what was true
+# in the past" vs. "keep this current going forward, automatically."
+# Conflating them would be the more common portfolio-project mistake this
+# file exists to avoid.
+#
+# check_cols names the columns as they exist in stg_ticker_universe (the
+# snapshot's source relation) - current_gics_sector / current_sub_industry -
+# not the renamed columns a manual SELECT might have produced. Pointing
+# `relation` straight at the ref() is dbt 1.9+'s YAML-only snapshot config,
+# which needs no companion .sql file.
+# ===========================================================================
+
+snapshots:
+  - name: dim_sector_scd_dbt
+    relation: ref('stg_ticker_universe')
+    config:
+      target_schema: silver
+      unique_key: ticker
+      strategy: check
+      check_cols:
+        - current_gics_sector
+        - current_sub_industry
