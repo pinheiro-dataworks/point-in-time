@@ -76,18 +76,18 @@ jobs:
       - name: Unit tests (pytest)
         run: pytest tests/ -v
 
-      - name: Fetch raw price data
-        # The 106 MB OHLCV corpus is git-ignored (see .gitignore's rationale)
-        # and is not re-fetched here, because it has no single authoritative
-        # re-download URL (the project guide's Kaggle source requires
-        # interactive auth). CI instead runs the Bronze/Silver/Gold pipeline
-        # against the reference data alone (skip-prices), which is sufficient
-        # to validate every dbt test that does not depend on price rows.
-        # A full local run (`make ingest && make build`) exercises the price
-        # path; see README "Reproducing this project" for that path.
-        run: echo "Price corpus is not committed - see step rationale above."
-
       - name: Ingest Bronze layer (reference tables only)
+        # The 106 MB OHLCV corpus is git-ignored (see .gitignore's rationale)
+        # and has no single authoritative re-download URL, so it is not
+        # fetched here. The small reference CSVs this step actually needs
+        # (sp500_current_snapshot.csv, sp500_ticker_start_end.csv) ARE
+        # committed under data/raw/reference/, precisely so this works on a
+        # fresh checkout with no extra fetch step. --skip-prices runs the
+        # Bronze/Silver/Gold pipeline against the reference data alone,
+        # which is sufficient to validate every dbt test that does not
+        # depend on price rows. A full local run (`make ingest && make
+        # build`) exercises the price path; see README "Reproducing this
+        # project" for sourcing it.
         run: python -m pit_lab.ingest --skip-prices --recreate
 
       - name: Materialise dbt profile

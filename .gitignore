@@ -3,12 +3,17 @@
 # ---------------------------------------------------------------------------
 
 # --- Raw data -------------------------------------------------------------
-# The raw OHLCV corpus is ~106 MB across 501 per-ticker CSVs and is fully
-# reproducible via `make ingest` (see src/pit_lab/ingest.py). Keeping it out of
-# version control keeps the clone small; the curated Gold-layer artefacts in
-# data/processed/ are committed instead, because the dashboard needs them at
-# runtime and they are only a few MB.
-data/raw/
+# The OHLCV price corpus is ~106 MB across 501 per-ticker CSVs. It is NOT
+# committed - too large for a portfolio repo, and the Kaggle source has no
+# single stable re-download URL (see README "Reproducing this project" for
+# how to source it locally).
+#
+# The small reference CSVs under data/raw/reference/ (sp500_current_snapshot
+# .csv, sp500_ticker_start_end.csv - ~80 KB combined) ARE committed. They are
+# what `python -m pit_lab.ingest --skip-prices` needs, including in CI - a
+# repo without them cannot reproduce even the reference-only path from a
+# fresh clone, which is exactly the bug that first version of this rule had.
+data/raw/prices/
 data/interim/
 
 # Committed on purpose — the dashboard's serving layer.

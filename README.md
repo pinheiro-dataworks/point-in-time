@@ -145,7 +145,8 @@ cp .env.example .env             # adjust credentials if not using the defaults
 docker compose up -d             # OR use a native PostgreSQL 16 install
 createdb pit_lab                 # if not using docker compose
 
-# 3. Data — place the Kaggle OHLCV export under data/raw/prices/ (see
+# 3. Data — the small reference CSVs under data/raw/reference/ are already
+#    committed. Place the Kaggle OHLCV export under data/raw/prices/ (see
 #    docs/project_guide.md section 4 for the exact source), then:
 make ingest
 make build
@@ -177,7 +178,8 @@ tests/           pytest suite — 31 tests, no live database required
 .github/         CI workflow (dbt build && dbt test)
 assets/brand/    Logo and layout standard
 data/processed/  Committed Gold-layer Parquet artefacts (~1.7 MB) — the dashboard's data
-data/raw/        Git-ignored — reproducible via `make ingest`
+data/raw/reference/  Committed reference CSVs (~80 KB) — what CI runs against
+data/raw/prices/     Git-ignored (~106 MB) — source it yourself, see step 3 above
 ```
 
 ---
