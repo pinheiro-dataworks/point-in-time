@@ -119,12 +119,23 @@ jobs:
       - name: dbt test (source-only checks)
         # The full Silver/Gold-dependent test suite (dim_sector_scd,
         # fact_returns, gold.*) requires the price corpus, which this
-        # workflow does not fetch - see the step above. These tests exercise
-        # the seed/registry/snapshot layer, which is fully reproducible in CI.
+        # workflow does not fetch - see the ingest step above. These tests
+        # exercise the seed/registry/snapshot layer, which is fully
+        # reproducible in CI.
+        #
+        # --exclude is required, not cosmetic: dbt's source: selector pulls
+        # in every test that TOUCHES that source, not just tests defined on
+        # it. assert_reclassified_ticker_has_multiple_versions references
+        # source('bronze', 'sector_history') AND source('silver_pipeline',
+        # 'dim_sector_scd') / 'ticker_universe' in the same query - the
+        # latter two are built by `pit_lab.build`, which this workflow does
+        # not run (see the ingest step), so selecting the bronze source
+        # alone still drags this test in and it fails on a missing relation.
         run: >
           dbt test --project-dir dbt_pit --profiles-dir . --target ci
           --select source:bronze.sector_history source:bronze.gics_sector_registry
           source:bronze.sp500_current_snapshot dim_sector_scd_dbt
+          --exclude assert_reclassified_ticker_has_multiple_versions
 
       - name: dbt docs generate
         run: dbt docs generate --project-dir dbt_pit --profiles-dir . --target ci
