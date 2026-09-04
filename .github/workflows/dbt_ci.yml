@@ -104,6 +104,15 @@ jobs:
       - name: dbt seed
         run: dbt seed --project-dir dbt_pit --profiles-dir . --target ci
 
+      - name: dbt run
+        # Builds stg_ticker_universe, which dim_sector_scd_dbt's snapshot
+        # references via ref() - the snapshot compiles that ref() straight to
+        # a table name and does not build it as a side effect, so skipping
+        # this step makes the next one fail with "relation does not exist".
+        # `dbt build` (used locally) sequences this automatically; the
+        # separate commands here for CI-step visibility do not.
+        run: dbt run --project-dir dbt_pit --profiles-dir . --target ci
+
       - name: dbt snapshot
         run: dbt snapshot --project-dir dbt_pit --profiles-dir . --target ci
 
