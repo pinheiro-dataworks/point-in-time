@@ -50,11 +50,21 @@ section[data-testid="stSidebar"] hr {
    center it - the stImage wrapper does not reliably stretch to the sidebar's
    full width in every Streamlit layout, leaving justify-content with no
    extra space to distribute. margin:auto centers a fixed-width block
-   element regardless of whether the parent is flex. */
+   element regardless of whether the parent is flex - PROVIDED the containing
+   block is actually wider than the image. It wasn't: Streamlit's internal
+   vertical-block layout is itself a flex container whose items default to
+   shrink-to-fit (align-items: flex-start), so the element container holding
+   the image was only ever as wide as the image, leaving zero room for any
+   centering rule applied inside it. Forcing that container to stretch to
+   the sidebar's full width is the fix that actually matters; the rest is
+   just centering within the now-available space. */
 section[data-testid="stSidebar"] [data-testid="stElementContainer"]:has([data-testid="stImage"]) {
+    width: 100% !important;
+    align-self: stretch !important;
     text-align: center;
 }
 section[data-testid="stSidebar"] [data-testid="stImage"] {
+    width: 100% !important;
     text-align: center;
 }
 section[data-testid="stSidebar"] [data-testid="stImage"] img {
