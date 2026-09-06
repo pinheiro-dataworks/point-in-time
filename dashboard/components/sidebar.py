@@ -23,7 +23,6 @@ def render_brand() -> None:
     st.sidebar.markdown(
         """
         <div class="pit-brand">
-            <div class="mark">Portfolio / Analytics Engineering</div>
             <div class="name">Point-in-Time<br>Analytics Lab</div>
             <div class="edition"><span class="dot"></span>S&amp;P 500 / GICS edition</div>
         </div>

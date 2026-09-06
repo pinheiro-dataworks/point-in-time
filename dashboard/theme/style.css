@@ -41,16 +41,26 @@ section[data-testid="stSidebar"] hr {
     border-color: var(--pit-border);
 }
 
+/* Sidebar logo: sized to 70% of the sidebar width, centered, and stripped of
+   Streamlit's default hover toolbar (fullscreen-expand button) - the brand
+   mark is decoration, not a figure meant to be opened on its own page. */
+section[data-testid="stSidebar"] [data-testid="stImage"] {
+    display: flex;
+    justify-content: center;
+}
+section[data-testid="stSidebar"] [data-testid="stImage"] img {
+    width: 70% !important;
+    height: auto !important;
+}
+section[data-testid="stSidebar"] [data-testid="stElementToolbar"],
+section[data-testid="stSidebar"] [data-testid="StyledFullScreenButton"],
+section[data-testid="stSidebar"] button[title="View fullscreen"] {
+    display: none !important;
+}
+
 /* Brand block */
 .pit-brand {
     padding: 4px 0 18px;
-}
-.pit-brand .mark {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--pit-accent) !important;
-    font-weight: 600;
 }
 .pit-brand .name {
     font-size: 20px;
@@ -124,7 +134,13 @@ section[data-testid="stSidebar"] [data-testid="stPageLink"]:has(a[aria-current="
 /* Main content area                                                     */
 /* --------------------------------------------------------------------- */
 .block-container {
-    padding-top: 2.2rem;
+    /* Streamlit Community Cloud overlays a fixed viewer toolbar (Share, star,
+       edit, GitHub, menu) at the very top of the page - present only on the
+       deployed app, not in local dev, which is why this clearance looks
+       excessive when testing locally. Too little padding here lets that
+       toolbar overlap the first line of content (the eyebrow label), cutting
+       it off on every page. */
+    padding-top: 4.5rem;
     padding-bottom: 3rem;
     max-width: 1180px;
 }
