@@ -45,32 +45,40 @@ section[data-testid="stSidebar"] hr {
    than CSS (a CSS shrink-after-stretch made it look soft), and stripped of
    Streamlit's default hover toolbar (fullscreen-expand button) - the brand
    mark is decoration, not a figure meant to be opened on its own page.
-   Centering is applied both ways (text-align on the ancestor chain AND
-   margin:auto on the img itself) because flex+justify-content alone did not
-   center it - the stImage wrapper does not reliably stretch to the sidebar's
-   full width in every Streamlit layout, leaving justify-content with no
-   extra space to distribute. margin:auto centers a fixed-width block
-   element regardless of whether the parent is flex - PROVIDED the containing
-   block is actually wider than the image. It wasn't: Streamlit's internal
-   vertical-block layout is itself a flex container whose items default to
-   shrink-to-fit (align-items: flex-start), so the element container holding
-   the image was only ever as wide as the image, leaving zero room for any
-   centering rule applied inside it. Forcing that container to stretch to
-   the sidebar's full width is the fix that actually matters; the rest is
-   just centering within the now-available space. */
+   ---------------------------------------------------------------------
+   The centering fix below is verified against getBoundingClientRect() on
+   the live deployed page (Playwright), not eyeballed - a prior attempt
+   that looked right locally shipped broken twice in a row, because the
+   bug only reproduces in Streamlit Community Cloud's actual DOM, never in
+   local dev. The real chain of custody for the sidebar image's width,
+   measured element by element:
+     stSidebarContent (299px, full sidebar)
+       stElementContainer (was 160px, shrink-to-fit -> forced to 100% below)
+         stFullScreenFrame (was 160px, shrink-to-fit -> forced to 100% below)
+           <div> [no data-testid, Streamlit-internal]  (was 160px -> forced
+                 to 100% below; this one already carries the
+                 `justify-content:center` that does the actual centering,
+                 but had nothing to center within until it could stretch)
+             stImage  <- MUST stay width:auto here. A prior fix wrongly
+                          forced this to 100% too, which fills all the
+                          space the parent's justify-content:center needed
+                          to distribute, silently cancelling the centering
+                          one level up. This was the actual bug.
+               stImageContainer (160px, matches the image - correct)
+                 img (160px, per st.image(width=160))
+   ---------------------------------------------------------------------- */
 section[data-testid="stSidebar"] [data-testid="stElementContainer"]:has([data-testid="stImage"]) {
     width: 100% !important;
     align-self: stretch !important;
-    text-align: center;
+}
+section[data-testid="stSidebar"] [data-testid="stFullScreenFrame"] {
+    width: 100% !important;
+}
+section[data-testid="stSidebar"] [data-testid="stFullScreenFrame"] > div {
+    width: 100% !important;
 }
 section[data-testid="stSidebar"] [data-testid="stImage"] {
-    width: 100% !important;
-    text-align: center;
-}
-section[data-testid="stSidebar"] [data-testid="stImage"] img {
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: auto !important;
 }
 section[data-testid="stSidebar"] [data-testid="stElementToolbar"],
 section[data-testid="stSidebar"] [data-testid="StyledFullScreenButton"],
