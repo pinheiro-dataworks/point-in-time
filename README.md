@@ -2,7 +2,7 @@
 
 **Naive joins silently corrupt historical analytics. This project proves it with a real, dated GICS sector reclassification — and fixes it with proper SCD Type 2 modeling.**
 
-[Live dashboard](#) · [Dataset](#dataset) · [Architecture](#architecture) · [Result](#the-result) · [Stack](#stack--zero-cost) · [Reproducing this project](#reproducing-this-project)
+[Live dashboard](https://point-in-time-renands.streamlit.app) · [Dataset](#dataset) · [Architecture](#architecture) · [Result](#the-result) · [Stack](#stack--zero-cost) · [Reproducing this project](#reproducing-this-project)
 
 ---
 
@@ -35,7 +35,7 @@ Recomputing cumulative sector returns for **Information Technology**, 2016-10-03
 
 Communication Services is the sharper story: it did not exist before 2018-09-24. A naive report compounding from 2016-01-01 anyway publishes a **266.0%** cumulative return for a sector that was absent for **21.4%** of the measurement window; the like-for-like figure, computed only over the period the sector actually existed, is **153.5%**.
 
-Every number above is computed by the warehouse, not hand-entered — reproduce it with `make all` (below) or read it live on the [**Gold Dashboard**](#) page, including the `EXPLAIN ANALYZE` plans behind the performance claims.
+Every number above is computed by the warehouse, not hand-entered — reproduce it with `make all` (below) or read it live on the [**Gold Dashboard**](https://point-in-time-renands.streamlit.app/gold-dashboard) page, including the `EXPLAIN ANALYZE` plans behind the performance claims.
 
 ---
 
@@ -97,7 +97,7 @@ Three real, freely available sources, plus one project-original contribution:
 | dbt snapshot | `dbt_pit/snapshots/snapshots.yml` | Production-automation SCD2 — and a documented account of what it can and cannot do |
 | `EXPLAIN ANALYZE` before/after indexing | `src/pit_lab/benchmark.py`, [`docs/performance.md`](docs/performance.md) | Real query plans for three shapes — including two where the index **does not help**, reported instead of omitted |
 
-**Data quality**: 35 dbt tests (7 singular + 28 generic), all passing on `dbt build`. One of them — the sector-existence check — caught a real bug during development: two tickers (LYV, TMUS) were missing from the original seed table entirely. See [`dashboard`'s Data Quality page](#) for the full account.
+**Data quality**: 35 dbt tests (7 singular + 28 generic), all passing on `dbt build`. One of them — the sector-existence check — caught a real bug during development: two tickers (LYV, TMUS) were missing from the original seed table entirely. See the [Data Quality page](https://point-in-time-renands.streamlit.app/data-quality) for the full account.
 
 ---
 
