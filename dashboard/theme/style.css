@@ -44,10 +44,23 @@ section[data-testid="stSidebar"] hr {
 /* Sidebar logo: centered, sized via st.image(width=160) in sidebar.py rather
    than CSS (a CSS shrink-after-stretch made it look soft), and stripped of
    Streamlit's default hover toolbar (fullscreen-expand button) - the brand
-   mark is decoration, not a figure meant to be opened on its own page. */
+   mark is decoration, not a figure meant to be opened on its own page.
+   Centering is applied both ways (text-align on the ancestor chain AND
+   margin:auto on the img itself) because flex+justify-content alone did not
+   center it - the stImage wrapper does not reliably stretch to the sidebar's
+   full width in every Streamlit layout, leaving justify-content with no
+   extra space to distribute. margin:auto centers a fixed-width block
+   element regardless of whether the parent is flex. */
+section[data-testid="stSidebar"] [data-testid="stElementContainer"]:has([data-testid="stImage"]) {
+    text-align: center;
+}
 section[data-testid="stSidebar"] [data-testid="stImage"] {
-    display: flex;
-    justify-content: center;
+    text-align: center;
+}
+section[data-testid="stSidebar"] [data-testid="stImage"] img {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 section[data-testid="stSidebar"] [data-testid="stElementToolbar"],
 section[data-testid="stSidebar"] [data-testid="StyledFullScreenButton"],
