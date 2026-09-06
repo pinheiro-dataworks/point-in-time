@@ -41,16 +41,13 @@ section[data-testid="stSidebar"] hr {
     border-color: var(--pit-border);
 }
 
-/* Sidebar logo: sized to 70% of the sidebar width, centered, and stripped of
+/* Sidebar logo: centered, sized via st.image(width=160) in sidebar.py rather
+   than CSS (a CSS shrink-after-stretch made it look soft), and stripped of
    Streamlit's default hover toolbar (fullscreen-expand button) - the brand
    mark is decoration, not a figure meant to be opened on its own page. */
 section[data-testid="stSidebar"] [data-testid="stImage"] {
     display: flex;
     justify-content: center;
-}
-section[data-testid="stSidebar"] [data-testid="stImage"] img {
-    width: 70% !important;
-    height: auto !important;
 }
 section[data-testid="stSidebar"] [data-testid="stElementToolbar"],
 section[data-testid="stSidebar"] [data-testid="StyledFullScreenButton"],
@@ -58,9 +55,10 @@ section[data-testid="stSidebar"] button[title="View fullscreen"] {
     display: none !important;
 }
 
-/* Brand block */
+/* Brand block - centered under the now-centered logo */
 .pit-brand {
     padding: 4px 0 18px;
+    text-align: center;
 }
 .pit-brand .name {
     font-size: 20px;
