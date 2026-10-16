@@ -1,11 +1,10 @@
 name: dbt build & test
 
 # Runs on every push/PR that touches SQL, dbt, or the Python pipeline, and on
-# a weekly schedule - the "GitHub Actions running dbt build && dbt test"
-# differentiator called out in docs/project_guide.md section 5. The workflow
-# builds the FULL warehouse (Bronze via pit_lab.ingest, Silver/Gold via
-# pit_lab.build, then dbt seed/snapshot/test) against an ephemeral Postgres
-# service container - not a mock, the real pipeline end to end.
+# a weekly schedule (see the cron entry below). The workflow builds the FULL
+# warehouse (Bronze via pit_lab.ingest, Silver/Gold via pit_lab.build, then
+# dbt seed/snapshot/test) against an ephemeral Postgres service container -
+# not a mock, the real pipeline end to end.
 
 on:
   push:
