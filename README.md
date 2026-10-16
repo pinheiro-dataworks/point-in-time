@@ -147,7 +147,7 @@ createdb pit_lab                 # if not using docker compose
 
 # 3. Data — the small reference CSVs under data/raw/reference/ are already
 #    committed. Place the Kaggle OHLCV export under data/raw/prices/ (see
-#    docs/project_guide.md section 4 for the exact source), then:
+#    the Dataset section above for the exact source), then:
 make ingest
 make build
 make export
@@ -171,7 +171,7 @@ make test                        # pytest (31 tests)
 ```
 dashboard/       Streamlit app — 8 pages, reads Parquet only, no DB at runtime
 dbt_pit/         dbt project — seeds, snapshot, sources, tests
-docs/            Sourcing register, performance report, original project guide
+docs/            Sourcing register, performance report, design decisions
 sql/             The hand-rolled pipeline — bronze/silver/gold, numbered and idempotent
 src/pit_lab/     Python package — ingest, build orchestration, export, benchmarks
 tests/           pytest suite — 31 tests, no live database required
